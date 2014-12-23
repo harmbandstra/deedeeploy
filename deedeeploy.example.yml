@@ -1,0 +1,24 @@
+environments:
+  - name: staging
+    hosts: ["host1:22", "host2:22"]
+    protocol: ssh
+    vcs: svn
+    user: deploy
+    path: /var/www/htdocs
+    postcmd:
+        - cd /var/www/htdocs
+        - php app/console assets:install web
+        - php app/console cache:clear --env=prod
+        - php app/console cache:warmup --env=prod
+
+  - name: production
+    hosts: ["host4:22"]
+    protocol: ssh
+    vcs: svn
+    user: deploy
+    path: /var/www/domain.ext/htdocs
+    postcmd:
+        - cd /var/www/htdocs
+        - php app/console assets:install web
+        - php app/console cache:clear --env=prod
+        - php app/console cache:warmup --env=prod
