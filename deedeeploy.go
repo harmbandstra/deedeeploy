@@ -138,6 +138,10 @@ func (dd *DDSession) deploy() {
 func (dd *DDSession) updateRemoteCode(client *ssh.Client) {
 	if dd.Configuration.Vcs == VcsSvn {
 		cmd := "cd " + dd.Configuration.Path + " && svn up"
+		if dd.Revision != "" {
+			cmd += " -r " + dd.Revision
+		}
+
 		dd.runRemoteCommand(client, cmd)
 	} else if dd.Configuration.Vcs == VcsGit {
 		log.Fatal("Git not yet implemented!")
